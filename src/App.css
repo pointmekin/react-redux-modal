@@ -20,11 +20,22 @@
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
+  background-color: #ffffff;
+  color: #202020;
 }
 
 .App-link {
   color: rgb(112, 76, 182);
 }
+
+
+button {
+  font-size: 18px;
+  padding: 8px;
+}
+
+
+
 
 @keyframes App-logo-float {
   0% {
