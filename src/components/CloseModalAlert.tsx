@@ -1,6 +1,17 @@
 import React from 'react'
+import '../styles/alert.css'
 
-const CloseModalAlert = () => {
+type Props = {
+  open: boolean,
+  onConfirm: () => void
+  onCancel: () => void
+}
+
+const CloseModalAlert = (props: Props) => {
+
+  const { open, onConfirm, onCancel } = props
+
+  if (!open) return null
   return(
     <div className="alert-p-overlay" style={{zIndex:30}}>
       <div
@@ -14,7 +25,7 @@ const CloseModalAlert = () => {
             className="alert-p__close close"
             data-dismiss="alert"
             aria-label="Close"
-            onClick={() => {}}
+            onClick={onCancel}
           >
             <span aria-hidden="true" className="alert-p__close__icon">
               &times;
@@ -27,7 +38,7 @@ const CloseModalAlert = () => {
             <button
               type="button"
               className="btn btn-p btn-p--mini btn-p--fixed-width btn-p--light"
-              onClick={() => {}}
+              onClick={onCancel}
             >
               {"back to questionaire"}
             </button>
@@ -35,7 +46,7 @@ const CloseModalAlert = () => {
               type="button"
               className="btn btn-p btn-p--mini btn-p--fixed-width"
               data-dismiss="modal"
-              onClick={() => {}}
+              onClick={onConfirm}
             >
               {"close questionaire"}
             </button>

@@ -1,14 +1,9 @@
-import { useEffect } from 'react';
+import { ChildModalProps } from '../interfaces/modal-prop';
 import '../styles/Modal.css';
 
-// @ts-ignore
-const Question1 = (props) => {
-  // @ts-ignore
+const Question1 = (props: ChildModalProps) => {
   const {modal, onCloseButtonClick} = props
 
-  useEffect(() => {
-    console.log('q1 mounted')
-  }, [])
   if (!modal) return null
   return (
     <div className="">
@@ -29,3 +24,6 @@ const Question1 = (props) => {
 }
 
 export default Question1
+
+
+

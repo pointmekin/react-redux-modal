@@ -33,7 +33,6 @@ function modalReducer(state = initialState, action: ModalAction): ModalState {
         type: state.type + 1
       };
     case ModalActionTypes.SetBackgroundPage: 
-      console.log('set background to ', action.payload)
       return {
         ...state,
         backgroundPage: action.payload

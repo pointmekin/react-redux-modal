@@ -18,7 +18,6 @@ type AppProps = {} & ConnectedProps<typeof connector>;
 
 function App(props: AppProps) {
   const { backgroundPage } = props
-  console.log( 'background page is ', backgroundPage)
   const defaultLocation = {pathname: "/", search: "", hash: "", state: undefined}
   return (
     <>

@@ -36,7 +36,7 @@ function Home(props: HomeProps) {
     <>
       <div className="App">
         <header className="App-header">
-          {/* <img src={logo} className="App-logo" alt="logo" style={{zIndex: 0}}/> */}
+          <img src={logo} className="App-logo" alt="logo" style={{zIndex: 0}}/>
           <Link
             to={{
               pathname:"/question",
