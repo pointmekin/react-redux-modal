@@ -48,7 +48,7 @@ const RouteLeavingGuard = ({
       navigate(lastLocation.pathname);
     }
   }, [confirmedNavigation, lastLocation, navigate]);
-  
+
   return (
     <>
       <Prompt when={when} message={handleBlockedNavigation} />
