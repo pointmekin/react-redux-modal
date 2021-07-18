@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import '../styles/Modal.css';
 
 // @ts-ignore
@@ -5,8 +6,12 @@ const Question1 = (props) => {
   // @ts-ignore
   const {modal, onCloseButtonClick} = props
 
+  useEffect(() => {
+    console.log('q1 mounted')
+  }, [])
+  if (!modal) return null
   return (
-    <div className="modal-overlay fade-in">
+    <div className="">
       <div className="modal">
         <span className="modal-close" onClick={onCloseButtonClick}>
           &#10005;
