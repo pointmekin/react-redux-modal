@@ -1,35 +1,42 @@
-import React from 'react';
+import { useLayoutEffect, useState } from 'react';
 import '../styles/Modal.css';
 import { connect, ConnectedProps } from 'react-redux';
 import { hideModal } from '../store/actions';
 import { RootState } from '../store/reducers';
 import Question1 from './Question1';
-import Question2 from './Question2';
-
-const mapStateToProps = (state: RootState) => ({
-  modal: state.modal.modal,
-  type: state.modal.type
-});
-
-const mapDispatchToProps = {
-  dispatchHideModal: hideModal,
-};
-
-const connector = connect(mapStateToProps, mapDispatchToProps);
-
-type ModalProps = {} & ConnectedProps<typeof connector>;
+import Question2 from './Question2'; 
+import { useHistory } from 'react-router';
+import { useDelayUnmount } from '../hooks/useDelayUnmount';
+import RouteLeavingGuard from './RouteLeavingGuard';
 
 function Modal(props: ModalProps) {
-  const { dispatchHideModal, modal, type } = props;
+  const { modal, type } = props;
+  const [isMounted, setIsMounted] = useState(false);
+  const history = useHistory()
+  const shouldRenderChild = useDelayUnmount(isMounted, 100);
+  const mountedStyle = { animation: "inAnimation 100ms ease-in" };
+  const unmountedStyle = { animation: "outAnimation 100ms ease-in" };
+  const [modalType, setModalType] = useState(type)
+  
+  // use for checking if the form has content
+  // const [isDirty, setIsDirty] = useState(false)
 
-  if (!modal) {
-    return null;
-  }
+  // mimic bootstrap's modal animation
+  useLayoutEffect(() => {
+    setIsMounted(false)
+    setTimeout(() => {
+      setModalType(type)
+      setIsMounted(true)
+    }, 100)
+  }, [type])
 
+  // handles the global modal close action
   const onCloseButtonClick = () => {
-    dispatchHideModal();
+    // by pushing, the react router will intercept the push with a confirmation dialog
+    history.push('/')
   };
 
+  // switch which modal to display based on state
   const modalSelector = (modalType: number) => {
     switch (modalType) {
       case 0:
@@ -41,9 +48,51 @@ function Modal(props: ModalProps) {
 
   return (
     <>
-      {modalSelector(type)}
+      {<div >
+        <div className="modal-overlay">
+          {modal && shouldRenderChild&&<div style={isMounted ? mountedStyle : unmountedStyle} >
+            {modalSelector(modalType)} 
+          </div>  }
+        </div>
+      </div>}
+
+      <RouteLeavingGuard
+        // When should shouldBlockNavigation be invoked, 
+        // simply passing a boolean 
+        // (same as "when" prop of Prompt of React-Router)
+        when={true}
+        // Navigate function
+        navigate={path => history.push(path)}
+        // Use as "message" prop of Prompt of React-Router
+        shouldBlockNavigation={location => {
+          // This case it blocks the navigation when: 
+          // 1. the login form is dirty, and 
+          // 2. the user is going to 'sign-up' scene.
+          //    (Just an example, in real case you might 
+          //     need to block all location regarding this case)
+          if (true) { // isDirty or editted
+            if (location.pathname === '/') return true
+          } 
+          return false
+        }}
+      /> 
+
     </>
   )
 }
+
+const mapStateToProps = (state: RootState) => ({
+  modal: state.modal.modal,
+  type: state.modal.type,
+  backgroundPage: state.modal.backgroundPage
+});
+
+const mapDispatchToProps = {
+  dispatchHideModal: hideModal,
+};
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type ModalProps = {} & ConnectedProps<typeof connector>;
 
 export default connector(Modal);

@@ -9,6 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 20;
 }
 
 .modal {
@@ -19,6 +20,7 @@
   position: relative;
   height: 250px;
   width: 350px;
+  z-index: 20;
 }
 
 .modal-close {
@@ -29,25 +31,20 @@
   cursor: pointer;
 }
 
-.fade-in {
-	opacity: 1;
-	animation-name: fadeInOpacity;
-	animation-timing-function: ease-in;
-	animation-duration: 0.3s;
+@keyframes inAnimation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
-.fade-out {
-	opacity: 0;
-	animation-name: fadeOutOpacity;
-	animation-timing-function: ease-in;
-	animation-duration: 0.3s;
-}
-
-@keyframes fadeInOpacity {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+@keyframes outAnimation {
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
 }

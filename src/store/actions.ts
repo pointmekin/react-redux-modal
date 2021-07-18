@@ -3,7 +3,8 @@ import ModalProperties from "../interfaces/modal-prop";
 export enum ModalActionTypes {
   ShowModal,
   HideModal,
-  NextModal
+  NextModal,
+  SetBackgroundPage
 }
 
 export interface ModalAction {
@@ -27,5 +28,12 @@ export function hideModal(): ModalAction {
 export function nextModal(): ModalAction {
   return {
     type: ModalActionTypes.NextModal,
+  };
+}
+
+export function setBackgroundPage(payload: any): ModalAction {
+  return {
+    type: ModalActionTypes.SetBackgroundPage,
+    payload
   };
 }

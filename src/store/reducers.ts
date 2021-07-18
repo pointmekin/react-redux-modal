@@ -5,11 +5,13 @@ import { ModalAction, ModalActionTypes } from './actions';
 type ModalState = {
   modal: ModalProperties | null | undefined;
   type: number
+  backgroundPage: any
 };
 
 const initialState: ModalState = {
   modal: null,
-  type: 0
+  type: 0,
+  backgroundPage: {pathname: "/", search: "", hash: "", state: undefined}
 };
 
 function modalReducer(state = initialState, action: ModalAction): ModalState {
@@ -20,7 +22,6 @@ function modalReducer(state = initialState, action: ModalAction): ModalState {
         modal: action.payload
       };
     case ModalActionTypes.HideModal:
-      window.location.href="/"
       return {
         ...state,
         modal: null,
@@ -31,6 +32,12 @@ function modalReducer(state = initialState, action: ModalAction): ModalState {
         ...state,
         type: state.type + 1
       };
+    case ModalActionTypes.SetBackgroundPage: 
+      return {
+        ...state,
+        backgroundPage: action.payload
+      }
+
     default:
       return state;
   }

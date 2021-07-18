@@ -1,13 +1,13 @@
+import { ChildModalProps } from '../interfaces/modal-prop';
 import '../styles/Modal.css';
 
-// @ts-ignore
-const Question2 = (props) => {
-  // @ts-ignore
+const Question2 = (props: ChildModalProps) => {
   const {modal, onCloseButtonClick} = props
 
+  if (!modal) return null
   return (
-    <div className="modal-overlay">
-      <div className="modal fade-in">
+    <div className="">
+      <div className="modal">
         <span className="modal-close" onClick={onCloseButtonClick}>
           &#10005;
         </span>

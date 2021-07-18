@@ -7,8 +7,7 @@ export default interface ModalProperties {
   type: number;
 }
 
-export default interface ModalType {
-  title: string;
-  description: string;
-  onButtonClick?: (event: React.MouseEvent) => void;
+export type ChildModalProps = {
+  modal: ModalProperties | null | undefined,
+  onCloseButtonClick: () => void
 }
