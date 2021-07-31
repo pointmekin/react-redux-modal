@@ -7,6 +7,7 @@ import Home from './components/Home';
 import Modal from './components/Modal';
 import { connect, ConnectedProps } from 'react-redux';
 import { RootState } from './store/reducers';
+import TopModal from './components/TopModal';
 
 const mapStateToProps = (state: RootState) => ({
   backgroundPage: state.modal.backgroundPage
@@ -22,6 +23,7 @@ function App(props: AppProps) {
   return (
     <>
     {<Route path="/question" children={<Modal />} />}
+    <TopModal/>
     <Switch location={backgroundPage ?? defaultLocation}>
       <Route path="/" exact component={Home} />
     </Switch>
