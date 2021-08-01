@@ -4,13 +4,17 @@ import { ModalAction, ModalActionTypes } from './actions';
 
 type ModalState = {
   modal: ModalProperties | null | undefined;
+  topModal: ModalProperties | null | undefined;
   type: number
+  topType: number
   backgroundPage: any
 };
 
 const initialState: ModalState = {
   modal: null,
+  topModal: null,
   type: 0,
+  topType: 0,
   backgroundPage: {pathname: "/", search: "", hash: "", state: undefined}
 };
 
@@ -21,11 +25,23 @@ function modalReducer(state = initialState, action: ModalAction): ModalState {
         ...state,
         modal: action.payload
       };
+    case ModalActionTypes.ShowTopModal:
+      console.log('called')
+      return {
+        ...state,
+        topModal: action.payload,
+        topType: 10
+      };
     case ModalActionTypes.HideModal:
       return {
         ...state,
         modal: null,
         type: 0
+      };
+    case ModalActionTypes.HideTopModal:
+      return {
+        ...state,
+        topModal: null,
       };
     case ModalActionTypes.NextModal:
       return {
