@@ -1,7 +1,8 @@
 import './App.css';
 import {
-  Switch,
-  Route
+  Routes,
+  Route,
+  BrowserRouter as Router
 } from "react-router-dom"
 import Home from './components/Home';
 import Modal from './components/Modal';
@@ -22,11 +23,11 @@ function App(props: AppProps) {
   const defaultLocation = {pathname: "/", search: "", hash: "", state: undefined}
   return (
     <>
-    {<Route path="/question" children={<Modal />} />}
-    <TopModal/>
-    <Switch location={backgroundPage ?? defaultLocation}>
-      <Route path="/" exact component={Home} />
-    </Switch>
+      <Routes basename="/">
+        <Route path="/*" children={<Home/>} />
+        <Route path="/question" children={<Modal />} />
+      </Routes>
+      <TopModal/>
     </>
   );
 }

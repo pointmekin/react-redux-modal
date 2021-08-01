@@ -1,8 +1,8 @@
-import { Location } from 'history'
-import { useEffect, useState } from 'react'
+// import { Location } from 'history'
+import { useCallback, useEffect, useState } from 'react'
 import { connect } from 'react-redux';
-import { Prompt } from 'react-router-dom'
-import { hideModal } from '../store/actions';
+import { Prompt, useBlocker, useLocation, useNavigate } from 'react-router-dom'
+import { hideModal, nextModal } from '../store/actions';
 import CloseModalAlert from './CloseModalAlert';
 
 interface Props {
@@ -21,17 +21,8 @@ const RouteLeavingGuard = ({
   const [lastLocation, setLastLocation] = useState<Location | null>(null);
   const [confirmedNavigation, setConfirmedNavigation] = useState(false);
   
-  const closeModal = () => {
+  const cancelNavigation = () => {
     setModalVisible(false);
-  };
-  
-  const handleBlockedNavigation = (nextLocation: Location): boolean => {
-    if (!confirmedNavigation && shouldBlockNavigation(nextLocation)) {
-      setModalVisible(true);
-      setLastLocation(nextLocation);
-      return false;
-    }
-    return true;
   };
   
   const handleConfirmNavigationClick = () => {
@@ -40,6 +31,7 @@ const RouteLeavingGuard = ({
     setTimeout(() => {
       setConfirmedNavigation(true);
     }, 100);
+    navigate("/")
   };
   
   useEffect(() => {
@@ -48,20 +40,34 @@ const RouteLeavingGuard = ({
       navigate(lastLocation.pathname);
     }
   }, [confirmedNavigation, lastLocation, navigate]);
+  const location  = useLocation()
+
+  const handleBlockedNavigation = useCallback(
+    nextLocation => {
+      if (
+        !confirmedNavigation &&
+        nextLocation.location.pathname !== location.pathname
+      ) {
+        setModalVisible(true);
+        setLastLocation(nextLocation.location);
+        return false;
+      }
+      return true;
+    },
+    [confirmedNavigation, location.pathname]
+  );
+
+  useEffect(() => {
+    if (confirmedNavigation && lastLocation) {
+      navigate(lastLocation.pathname);
+    }
+  }, [confirmedNavigation, lastLocation, navigate]);
+
+  useBlocker(handleBlockedNavigation, when);
 
   return (
     <>
-      <Prompt when={when} message={handleBlockedNavigation} />
-      {/* <WarningDialog
-          open={modalVisible}
-          titleText=”Close without saving?”
-          contentText=”You have unsaved changes. Are you sure you want to leave this page without saving?”
-          cancelButtonText=”DISMISS”
-          confirmButtonText=”CONFIRM”
-          onCancel={closeModal}
-          onConfirm={handleConfirmNavigationClick}
-        /> */}
-      {modalVisible && <CloseModalAlert open={modalVisible} onCancel={closeModal} onConfirm={handleConfirmNavigationClick}/>}
+      {modalVisible && <CloseModalAlert open={modalVisible} onCancel={cancelNavigation} onConfirm={handleConfirmNavigationClick}/>}
     </>
   );
 };

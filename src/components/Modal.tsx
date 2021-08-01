@@ -5,14 +5,16 @@ import { hideModal } from '../store/actions';
 import { RootState } from '../store/reducers';
 import Question1 from './Question1';
 import Question2 from './Question2'; 
-import { useHistory } from 'react-router';
+// import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useDelayUnmount } from '../hooks/useDelayUnmount';
 import RouteLeavingGuard from './RouteLeavingGuard';
 
 function Modal(props: ModalProps) {
   const { modal, type } = props;
   const [isMounted, setIsMounted] = useState(false);
-  const history = useHistory()
+  // const history = useHistory()
+  const navigate = useNavigate()
   const shouldRenderChild = useDelayUnmount(isMounted, 100);
   const mountedStyle = { animation: "inAnimation 100ms ease-in" };
   const unmountedStyle = { animation: "outAnimation 100ms ease-in" };
@@ -33,7 +35,8 @@ function Modal(props: ModalProps) {
   // handles the global modal close action
   const onCloseButtonClick = () => {
     // by pushing, the react router will intercept the push with a confirmation dialog
-    history.push('/')
+    // history.push('/')
+    navigate('/')
   };
 
   // switch which modal to display based on state
@@ -62,7 +65,7 @@ function Modal(props: ModalProps) {
         // (same as "when" prop of Prompt of React-Router)
         when={true}
         // Navigate function
-        navigate={path => history.push(path)}
+        navigate={(path) => navigate(path)} /* path => history.push(path) */ 
         // Use as "message" prop of Prompt of React-Router
         shouldBlockNavigation={location => {
           // This case it blocks the navigation when: 
@@ -71,7 +74,8 @@ function Modal(props: ModalProps) {
           //    (Just an example, in real case you might 
           //     need to block all location regarding this case)
           if (true) { // isDirty or editted
-            if (location.pathname === '/') return true
+            console.log('eh', location.pathname)
+            if (location.pathname === '/question') return true
           } 
           return false
         }}
